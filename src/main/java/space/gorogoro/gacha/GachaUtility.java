@@ -23,7 +23,7 @@ import org.bukkit.metadata.MetadataValue;
 public class GachaUtility {
 
   protected static final String NUMALPHA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	
+  
   /**
    * Output stack trace to log file.
    * @param Exception Exception
