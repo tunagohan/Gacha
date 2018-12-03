@@ -67,12 +67,12 @@ public class GachaCommand {
    * @return boolean true:Success false:Failure
    */
   public boolean list() {
-  	List<String> glist = gacha.getDatabase().list();
-  	if(glist.size() <= 0) {
+    List<String> glist = gacha.getDatabase().list();
+    if(glist.size() <= 0) {
       GachaUtility.sendMessage(sender, "Record not found.");
       return true;
-  	}
-  	
+    }
+    
     for(String msg: glist) {
       GachaUtility.sendMessage(sender, msg);
     }
@@ -89,7 +89,7 @@ public class GachaCommand {
     }
     
     if(!(sender instanceof Player)) {
-    	return false;
+      return false;
     }
     
     String gachaName = args[1];
@@ -97,7 +97,7 @@ public class GachaCommand {
       GachaUtility.sendMessage(sender, "Record not found. gacha_name=" + gachaName);
       return true;
     }
-  	GachaUtility.setPunch((Player)sender, gacha, gachaName);
+    GachaUtility.setPunch((Player)sender, gacha, gachaName);
     GachaUtility.sendMessage(sender, "Please punching(right click) a chest of gachagacha. gacha_name=" + gachaName);
     return true;
   }
