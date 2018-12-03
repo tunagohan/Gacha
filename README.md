@@ -54,7 +54,8 @@ mvn package
 
 # Japanese　日本語φ(｀д´)ﾒﾓﾒﾓ...
 
-- 日本語化はプラグインフォルダ内にGacha/config_jp.ymlが展開されるはずなので、その内容をconfig.ymlに上書きしてください。
+※重要※日本語化はプラグインフォルダ内にGacha/config_jp.ymlが展開されるはずなので、  
+その内容をconfig.ymlに上書きしてください。
 
 
 →看板を貼り付ける  
