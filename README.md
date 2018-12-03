@@ -14,17 +14,17 @@ Note: It is recommended that you use a protection plug-in such as LWC or WorldGu
 
 # Useage
 1. Create signbord.  
-line1 `[gacha]` Fixed character string  
-line2 `gacha1` Specify gacha name.Please enter the this line with one-byte alphanumeric underscore
-line3 `***gacha1***` Title for sign.  
-line4 `test gacha` Comment for sign.  
+ line1 `[gacha]` Fixed character string  
+ line2 `gacha1` Specify gacha name. Please enter the this line with one-byte alphanumeric underscore
+ line3 `***gacha1***` Title for sign.  
+ line4 `test gacha` Comment for sign.  
 
 2. Set Chest.
-/gacha modify gacha1
+ /gacha modify gacha1
 
-Please right click and punch the chest.
-After setting the chest, it is completed.
-Hold the ticket on your right hand and right click on the signbord to receive the prize.
+ Please right click and punch the chest.
+ After setting the chest, it is completed.
+ Hold the ticket on your right hand and right click on the signbord to receive the prize.
 
 3. Command.
 ```
@@ -53,14 +53,18 @@ mvn package
 ```
 
 # Japanese　日本語φ(｀д´)ﾒﾓﾒﾓ...
+
 →看板を貼り付ける
 　1行目「[gacha]」
 　2行目「gacha1」       ガチャガチャ設定名（削除や変更で指定する為の名称です。名称には半角英数字とアンダーバーが使えます。）　
 　3行目「新規ガチャ」   　ガチャガチャ表示名（看板を貼り付け終わると看板の１行目に表示されます。）
 　4行目「初心者装備GET!」 ガチャガチャ説明（看板を貼り付け終わると看板の２行目に表示されます。）
+
 →ガチャ用チェストを設定する
 　/gacha modify gacha1
+
 →ガチャガチャ券を発行する
 　/gacha ticket kubotan
+
 →右手にガチャガチャ券を持って、先ほど貼り付けた看板を右クリックすると、
 　ガチャガチャ券と引き換えに、ガチャ用チェストのどれかアイテム１つがランダムでゲットできます。
