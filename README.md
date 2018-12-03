@@ -54,6 +54,9 @@ mvn package
 
 # Japanese　日本語φ(｀д´)ﾒﾓﾒﾓ...
 
+- 日本語化はconfig_jp.ymlの内容でconfig.ymlを上書きしてください。
+
+
 →看板を貼り付ける  
   1行目「[gacha]」  
   2行目「gacha1」       ガチャガチャ設定名（削除や変更で指定する為の名称です。）　  
