@@ -53,14 +53,14 @@ mvn package
 ```
 
 # Japanese　日本語φ(｀д´)ﾒﾓﾒﾓ...
-
-※重要※
-初期設定は英語です。
-日本語化はプラグインフォルダ内にGacha/config_jp.ymlが展開されるはずなので、  
-その内容をconfig.ymlに上書きしてください。
-/gacha reloadするとconfig.ymlを再読み込みします。
-
-
+  
+※重要※  
+初期設定は英語です。  
+日本語化はプラグインフォルダ内にGacha/config_jp.ymlが展開されるはずなので、    
+その内容をconfig.ymlに上書きしてください。  
+/gacha reloadするとconfig.ymlを再読み込みします。  
+  
+  
 →看板を貼り付ける  
   1行目「[gacha]」  
   2行目「gacha1」       ガチャガチャ設定名（削除や変更で指定する為の名称です。）　  
