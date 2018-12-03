@@ -220,19 +220,19 @@ public class GachaDatabase {
         );
       rs = prepStmt.executeQuery();
       while(rs.next()){
-          ret.add(
-            String.format(
-              "gacha_name:%s world:%s sign[x,y,z]:%d,%d,%d chest[x,y,z]:%d,%d,%d"
-              ,rs.getString(1)
-              ,rs.getString(2)
-              ,rs.getInt(3)
-              ,rs.getInt(4)
-              ,rs.getInt(5)
-              ,rs.getInt(6)
-              ,rs.getInt(7)
-              ,rs.getInt(8)
-              )
-          );
+        ret.add(
+          String.format(
+            "gacha_name:%s world:%s sign[x,y,z]:%d,%d,%d chest[x,y,z]:%d,%d,%d"
+            ,rs.getString(1)
+            ,rs.getString(2)
+            ,rs.getInt(3)
+            ,rs.getInt(4)
+            ,rs.getInt(5)
+            ,rs.getInt(6)
+            ,rs.getInt(7)
+            ,rs.getInt(8)
+          )
+        );
       }
       closeRs(rs);
       closePrepStmt(prepStmt);
@@ -314,27 +314,27 @@ public class GachaDatabase {
         worldName = rs.getString(1);
         chestX = rs.getInt(2);
         if (rs.wasNull()) {
-        	isChestNothing = true;
+          isChestNothing = true;
         }
         chestY = rs.getInt(3);
         if (rs.wasNull()) {
-        	isChestNothing = true;
+          isChestNothing = true;
         }
         chestZ = rs.getInt(4);
         if (rs.wasNull()) {
-        	isChestNothing = true;
+          isChestNothing = true;
         }
       }
       closeRs(rs);
       closePrepStmt(prepStmt);
       
       if(isChestNothing) {
-      	return null;
+        return null;
       }
       
       Block b = new Location(gacha.getServer().getWorld(worldName), chestX, chestY, chestZ).getBlock();
       if(!b.getType().equals(Material.CHEST)) {
-      	return null;
+        return null;
       }
       
       return (Chest)b.getState();
@@ -351,11 +351,11 @@ public class GachaDatabase {
    */
   public boolean isGacha(Location loc){
     try {
-    	boolean cacheClear = false;
-    	if(expireCache > System.currentTimeMillis()) {
-    		cacheClear = true;
-    	}
-    	return isGacha(loc, cacheClear);
+      boolean cacheClear = false;
+      if(expireCache > System.currentTimeMillis()) {
+        cacheClear = true;
+      }
+      return isGacha(loc, cacheClear);
     } catch (Exception e) {
       GachaUtility.logStackTrace(e);
     }
@@ -370,9 +370,9 @@ public class GachaDatabase {
    */
   public boolean isGacha(Location loc, boolean cacheClear){
     try {
-    	if( cacheClear ) {
-    		refreshCache();
-    	}
+      if( cacheClear ) {
+        refreshCache();
+      }
       String searchIndex = String.join(
         "_"
         ,loc.getWorld().getName()
@@ -489,7 +489,7 @@ public class GachaDatabase {
     try {
       Integer gachaId = getGacha(gachaName);
       if(gachaId == null){
-          return false;
+        return false;
       }
       
       prepStmt = getCon().prepareStatement("UPDATE gacha SET chest_x = ?, chest_y = ?, chest_z = ? WHERE gacha_name = ?;");
@@ -592,7 +592,7 @@ public class GachaDatabase {
       while(rs.next()){
         closeRs(rs);
         closePrepStmt(prepStmt);
-      	return true;
+        return true;
       }
       closeRs(rs);
       closePrepStmt(prepStmt);
