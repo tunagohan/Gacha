@@ -108,7 +108,7 @@ public class Gacha extends JavaPlugin{
    */
   public boolean onCommand( CommandSender sender, Command commandInfo, String label, String[] args) {
     boolean hideUseageFlag = true;  // true:Success false:Display the usage dialog set in plugin.yml
-  	try{
+    try{
       if(!commandInfo.getName().equals("gacha")) {
         return hideUseageFlag;
       }
