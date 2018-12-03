@@ -47,12 +47,12 @@ public class GachaListener implements Listener{
    * @param SignChangeEvent event
    */
   @EventHandler(priority=EventPriority.HIGHEST)
-  public void onSignChange(SignChangeEvent event) {    
+  public void onSignChange(SignChangeEvent event) {
     try {
       if(!event.getLine(0).toLowerCase().equals("[gacha]")) {
         return;
       }
-
+      
       if(!event.getPlayer().hasPermission("gacha.create")) {
         return;
       }
@@ -75,8 +75,8 @@ public class GachaListener implements Listener{
       if(!p.matcher(gachaName).find()) {
         event.setCancelled(true);
         GachaUtility.sendMessage(event.getPlayer(), "Please enter the second line of the signboard with one-byte alphanumeric underscore.");
-      	return;
-      }     
+        return;
+      }
       
       Integer gachaId = gacha.getDatabase().getGacha(gachaName, gachaDisplayName, gachaDetail, worldName, x, y, z);
       if(gachaId == null) {
@@ -109,7 +109,7 @@ public class GachaListener implements Listener{
     if (material.equals(Material.SIGN) || material.equals(Material.WALL_SIGN)) {
       signProc(event);
     }else if(material.equals(Material.CHEST)) {
-      chestProc(event);    	
+      chestProc(event);
     }
   }
 
@@ -121,7 +121,7 @@ public class GachaListener implements Listener{
     try {
       Sign sign = (Sign) event.getClickedBlock().getState();
       Player p = event.getPlayer();
-
+      
       Location signLoc = sign.getLocation(); 
       if(!gacha.getDatabase().isGacha(signLoc)) {
         return;
@@ -130,27 +130,27 @@ public class GachaListener implements Listener{
       
       ItemStack ticket = p.getInventory().getItemInMainHand();
       if( !ticket.getType().equals(Material.PAPER) ) {
-      	GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("hold-the-ticket")));
-      	return;
+        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("hold-the-ticket")));
+        return;
       }
       
       List<String> lores = ticket.getItemMeta().getLore();
       if( lores.size() != 3) {
-      	GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("hold-the-ticket")));
-      	return;
+        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("hold-the-ticket")));
+        return;
       }
-			
+      
       String ticketCode = GachaUtility.scanf(GachaCommand.FORMAT_TICKET_CODE, lores.get(2));
       if(!gacha.getDatabase().existsTicket(ticketCode)) {
-      	GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-ticket-code")));
-      	return;
+        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-ticket-code")));
+        return;
       }
-
+      
       Chest chest = gacha.getDatabase().getGachaChest(signLoc);
       if(chest == null) {
-      	GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-chest1")));
-      	GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-chest2")));
-      	return;      	
+        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-chest1")));
+        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-chest2")));
+        return;
       }
 
       gacha.getDatabase().deleteTicket(ticketCode);
@@ -160,13 +160,13 @@ public class GachaListener implements Listener{
       int pick = new Random().nextInt(iv.getSize());
       ItemStack pickItem = iv.getItem(pick);
       if(pickItem == null) {
-      	GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-pick")));
-      	return;      	
+        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-pick")));
+        return;
       }
       
       ItemStack sendItem = pickItem.clone();
       p.getInventory().addItem(sendItem);
-    	GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("found-pick")));
+      GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("found-pick")));
       
     } catch (Exception e){
       GachaUtility.logStackTrace(e);
@@ -179,17 +179,17 @@ public class GachaListener implements Listener{
    */
   private void chestProc(PlayerInteractEvent event) {
     try {
-    	Player p = event.getPlayer();
-    	if(!p.getType().equals(EntityType.PLAYER)){
-    	  return;
-    	}
-
-    	if(!event.getClickedBlock().getType().equals(Material.CHEST)) {
-    		return;
-    	}
-
+      Player p = event.getPlayer();
+      if(!p.getType().equals(EntityType.PLAYER)){
+        return;
+      }
+      
+      if(!event.getClickedBlock().getType().equals(Material.CHEST)) {
+        return;
+      }
+      
       if(!GachaUtility.isInPunch(p)) {
-      	return;
+        return;
       } else {
         event.setCancelled(true);
       }
@@ -197,7 +197,7 @@ public class GachaListener implements Listener{
       String gachaName = GachaUtility.getGachaNameInPunch(p);
       GachaUtility.removePunch(p, gacha);
       if(gachaName == null) {
-      	return;
+        return;
       }
       
       Location loc = event.getClickedBlock().getLocation();
@@ -205,7 +205,7 @@ public class GachaListener implements Listener{
         GachaUtility.sendMessage(p, "Updated. gacha_name=" + gachaName);
         return;
       }
-
+    
     } catch (Exception e){
       GachaUtility.logStackTrace(e);
     }
