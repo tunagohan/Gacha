@@ -69,18 +69,18 @@ public class Gacha extends JavaPlugin{
 
       // copy languge template
       ArrayList<String> langFileNameList = new ArrayList<String>(
-      		Arrays.asList(
-      				"config_jp.yml"
-      				// ,"config_fr.yml"   // add here language
-      		)
+        Arrays.asList(
+          "config_jp.yml"
+          // ,"config_fr.yml"   // add here language
+        )
       );
       for (String curFileName : langFileNameList) {
-	      File configFileTemplate = new File(getDataFolder(), curFileName);
-	      InputStream in = getResource(curFileName);
-	      OutputStream out = new FileOutputStream(configFileTemplate);
-	      IOUtils.copy(in, out);
-	      out.close();
-	      in.close();
+        File configFileTemplate = new File(getDataFolder(), curFileName);
+        InputStream in = getResource(curFileName);
+        OutputStream out = new FileOutputStream(configFileTemplate);
+        IOUtils.copy(in, out);
+        out.close();
+        in.close();
       }
       
       // Initialize the database.
