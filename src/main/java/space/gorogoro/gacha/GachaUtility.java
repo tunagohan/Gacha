@@ -54,10 +54,10 @@ public class GachaUtility {
    * @return String gacha name
    */
   public static String getGachaNameInPunch(Player player){
-  	for(MetadataValue mv:player.getMetadata(GachaCommand.META_CHEST)) {
-  		return mv.asString();
-  	}
-		return null;
+    for(MetadataValue mv:player.getMetadata(GachaCommand.META_CHEST)) {
+      return mv.asString();
+    }
+    return null;
   }
   
   /**
@@ -67,8 +67,8 @@ public class GachaUtility {
    * @param String Gacha Name
    */
   public static void setPunch(Player player, Gacha gacha, String gachaName){
-  	removePunch(player, gacha);
-  	player.setMetadata(GachaCommand.META_CHEST, new FixedMetadataValue(gacha, gachaName));
+    removePunch(player, gacha);
+    player.setMetadata(GachaCommand.META_CHEST, new FixedMetadataValue(gacha, gachaName));
   }
 
   /**
@@ -94,10 +94,10 @@ public class GachaUtility {
    * @return String code
    */
   public static String generateCode(){
-  	return String.format("%s-%s-%s",
-  			RandomStringUtils.random(4, NUMALPHA),
-  			RandomStringUtils.random(6, NUMALPHA),
-  			RandomStringUtils.random(4, NUMALPHA)
+    return String.format("%s-%s-%s",
+      RandomStringUtils.random(4, NUMALPHA),
+      RandomStringUtils.random(6, NUMALPHA),
+      RandomStringUtils.random(4, NUMALPHA)
     );
   }
 
@@ -108,6 +108,6 @@ public class GachaUtility {
    * @return String value
    */
   public static String scanf(String format, String str) {
-  	return StringUtils.difference(format, str);
+    return StringUtils.difference(format, str);
   }
 }
