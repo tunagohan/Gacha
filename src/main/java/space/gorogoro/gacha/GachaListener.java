@@ -89,7 +89,6 @@ public class GachaListener implements Listener{
       event.setLine(2, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("sign-line3")));
       event.setLine(3, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("sign-line4")));
       
-      gacha.getDatabase().refreshCache();
     } catch (Exception e){
       GachaUtility.logStackTrace(e);
     }

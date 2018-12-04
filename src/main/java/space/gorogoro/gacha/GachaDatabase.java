@@ -258,6 +258,7 @@ public class GachaDatabase {
       prepStmt.addBatch();
       prepStmt.executeBatch();
       closePrepStmt(prepStmt);
+      refreshCache();
 
     } catch (SQLException e) {
       GachaUtility.logStackTrace(e);
@@ -466,6 +467,8 @@ public class GachaDatabase {
       }
       closeRs(rs);
       closePrepStmt(prepStmt);
+      refreshCache();
+
     } catch (SQLException e) {
       GachaUtility.logStackTrace(e);
     } finally {
