@@ -79,5 +79,5 @@ mvn package
   ガチャガチャ券と引き換えに、ガチャ用チェストのどれかアイテム１つがランダムでゲットできます。  
 
 # Link
-https://www.spigotmc.org/resources/gacha.62936/
-https://dev.bukkit.org/projects/gacha
+https://www.spigotmc.org/resources/gacha.62936/  
+https://dev.bukkit.org/projects/gacha  
