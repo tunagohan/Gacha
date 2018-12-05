@@ -77,3 +77,9 @@ mvn package
   
 →右手にガチャガチャ券を持って、先ほど貼り付けた看板を右クリックすると、  
   ガチャガチャ券と引き換えに、ガチャ用チェストのどれかアイテム１つがランダムでゲットできます。  
+
+# Link
+
+https://www.spigotmc.org/resources/gacha.62936/
+
+https://dev.bukkit.org/projects/gacha
