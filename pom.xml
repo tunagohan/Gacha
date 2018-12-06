@@ -56,6 +56,7 @@
       </plugin>
       //dev server autorun-->
       <!-- findbugs -->
+      <!--
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
@@ -78,7 +79,9 @@
           <findbugsXmlOutputDirectory>target/site/findbugs</findbugsXmlOutputDirectory>
         </configuration>
       </plugin>
+      -->
       <!-- checkstyle -->
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -99,6 +102,7 @@
           <outputFile>${project.build.directory}/site/checkstyle/checkstyle-result.xml</outputFile>
         </configuration>
       </plugin>
+      -->
     </plugins>
   </build>
 
