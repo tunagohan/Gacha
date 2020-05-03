@@ -1,14 +1,13 @@
 package space.gorogoro.gacha;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 
-import org.apache.commons.io.IOUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -61,7 +60,7 @@ public class Gacha extends JavaPlugin{
       if(!getDataFolder().exists()){
         getDataFolder().mkdir();
       }
-      
+
       File configFile = new File(getDataFolder(), "config.yml");
       if(!configFile.exists()){
         saveDefaultConfig();
@@ -75,14 +74,11 @@ public class Gacha extends JavaPlugin{
         )
       );
       for (String curFileName : langFileNameList) {
-        File configFileTemplate = new File(getDataFolder(), curFileName);
         InputStream in = getResource(curFileName);
-        OutputStream out = new FileOutputStream(configFileTemplate);
-        IOUtils.copy(in, out);
-        out.close();
+        Files.copy(in, new File(getDataFolder(), curFileName).toPath(), StandardCopyOption.REPLACE_EXISTING);
         in.close();
       }
-      
+
       // Initialize the database.
       database = new GachaDatabase(this);
       database.initialize();
@@ -103,7 +99,7 @@ public class Gacha extends JavaPlugin{
 
   /**
    * JavaPlugin method onCommand.
-   * 
+   *
    * @return boolean true:Success false:Display the usage dialog set in plugin.yml
    */
   public boolean onCommand( CommandSender sender, Command commandInfo, String label, String[] args) {
@@ -112,12 +108,12 @@ public class Gacha extends JavaPlugin{
       if(!commandInfo.getName().equals("gacha")) {
         return hideUseageFlag;
       }
-      
+
       if(args.length <= 0) {
         return hideUseageFlag;
-      }        
+      }
       String subCommand = args[0];
-      
+
       command.initialize(sender, args);
       switch(subCommand) {
         case "list":
@@ -125,7 +121,7 @@ public class Gacha extends JavaPlugin{
             hideUseageFlag = command.list();
           }
           break;
-          
+
         case "modify":
           if(sender.hasPermission("gacha.modify")) {
             hideUseageFlag = command.modify();
@@ -137,7 +133,7 @@ public class Gacha extends JavaPlugin{
             hideUseageFlag = command.delete();
           }
           break;
-          
+
         case "ticket":
           if((sender instanceof ConsoleCommandSender) || sender.isOp()) {
             command.ticket();
