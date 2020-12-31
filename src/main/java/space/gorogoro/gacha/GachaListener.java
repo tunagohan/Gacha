@@ -109,7 +109,7 @@ public class GachaListener implements Listener{
     BlockData data = clickedBlock.getBlockData();
     if (data instanceof Sign || data instanceof WallSign) {
       signProc(event);
-    }else if(data instanceof Chest) {
+    }else if(data.getMaterial().equals(Material.CHEST)) {
       chestProc(event);
     }
   }
