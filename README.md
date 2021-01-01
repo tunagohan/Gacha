@@ -1,5 +1,5 @@
 # Gacha
-[![Spigot 1.15.2](https://img.shields.io/badge/Spigot-1.15.2-brightgreen.svg)](https://www.spigotmc.org/wiki/spigot/)
+[![Spigot 1.15.2](https://img.shields.io/badge/Spigot-1.16.4-brightgreen.svg)](https://www.spigotmc.org/wiki/spigot/)
 [![GitHub release](https://img.shields.io/github/release/kubotan/Gacha.svg)](https://github.com/kubotan/Gacha/releases)
 [![Build Status]( https://travis-ci.org/kubotan/Gacha.svg?branch=master)](https://travis-ci.org/kubotan/Gacha)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/kubotan/Gacha/issues)
@@ -31,7 +31,7 @@ Note: It is recommended that you use a protection plug-in such as LWC or WorldGu
 /gacha list - List all gacha
 /gacha modify <gacha_name> - Modify a gacha
 /gacha delete <gacha_name> - Delete a gacha
-/gacha ticket <player_name> - Issue a ticket
+/gacha ticket <player_name|@a|@p|@r|@s> - Issue a ticket
 ```
 
 # Permission
