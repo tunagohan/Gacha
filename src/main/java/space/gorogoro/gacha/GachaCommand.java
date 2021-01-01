@@ -123,18 +123,12 @@ public class GachaCommand {
    * Processing of command ticket.
    * @return boolean true:Success false:Failure
    */
-  public boolean ticket() {
+  public boolean ticket(Player p) {
     if(args.length != 2) {
       return false;
     }
 
-    String playerName = args[1];
-    Player player = gacha.getServer().getPlayer(playerName);
-    if(player == null) {
-      return false;
-    }
-
-    int emptySlot = player.getInventory().firstEmpty();
+    int emptySlot = p.getInventory().firstEmpty();
     if (emptySlot == -1) {
       // not empty
       return false;
@@ -145,7 +139,7 @@ public class GachaCommand {
       GachaUtility.sendMessage(sender, "Failure generate ticket code.");
       return false;
     }
-    
+
     ItemStack ticket = new ItemStack(Material.PAPER, 1);
     ItemMeta im = ticket.getItemMeta();
     im.setDisplayName(ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("ticket-display-name")));
@@ -155,9 +149,9 @@ public class GachaCommand {
     lore.add(String.format(FORMAT_TICKET_CODE, ticketCode));
     im.setLore(lore);
     ticket.setItemMeta(im);
-    player.getInventory().setItem(emptySlot, ticket);
+    p.getInventory().setItem(emptySlot, ticket);
     
-    GachaUtility.sendMessage(sender, "Issue a ticket. player_name=" + playerName);
+    GachaUtility.sendMessage(sender, "Issue a ticket. player_name=" + p.getDisplayName());
     return true;
   }
 

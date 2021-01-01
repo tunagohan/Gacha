@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -135,8 +137,10 @@ public class Gacha extends JavaPlugin{
           break;
 
         case "ticket":
-          if((sender instanceof ConsoleCommandSender) || sender.isOp()) {
-            command.ticket();
+          if((sender instanceof BlockCommandSender) || (sender instanceof ConsoleCommandSender) || sender.isOp()) {
+            for(Player p:GachaUtility.getTarget(this, args[1], sender)) {  // @a @p @s @r or playername
+              command.ticket(p);
+            }
             hideUseageFlag = true;
           }
           break;

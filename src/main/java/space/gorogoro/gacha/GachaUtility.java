@@ -2,16 +2,21 @@ package space.gorogoro.gacha;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 /*
  * GachaUtility
@@ -23,7 +28,7 @@ import org.bukkit.metadata.MetadataValue;
 public class GachaUtility {
 
   protected static final String NUMALPHA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  
+
   /**
    * Output stack trace to log file.
    * @param Exception Exception
@@ -109,5 +114,71 @@ public class GachaUtility {
    */
   public static String scanf(String format, String str) {
     return StringUtils.difference(format, str);
+  }
+
+  public static ArrayList<Player> getTarget(Plugin gacha, String selector) {
+    return getTarget(gacha, selector, null);
+  }
+
+  public static ArrayList<Player> getTarget(Plugin gacha, String selector, CommandSender sender) {
+
+    ArrayList<Player> list = new ArrayList<Player>();
+    if(!selector.startsWith("@")) {
+      Player p = gacha.getServer().getPlayer(selector);
+      if(p != null) {
+        list.add(p);
+      }
+    } else {
+      switch(selector) {
+        case "@a":
+          list.addAll(gacha.getServer().getOnlinePlayers());
+          break;
+
+        case "@p":
+          if((sender instanceof Player) || (sender instanceof BlockCommandSender)) {
+            Location senderLocation = null;
+            if(sender instanceof Player) {
+              Player sp = (Player) sender;
+              senderLocation = sp.getLocation();
+            } else if(sender instanceof BlockCommandSender) {
+              BlockCommandSender sb = (BlockCommandSender) sender;
+              senderLocation = sb.getBlock().getLocation();
+            }
+            if(senderLocation != null) {
+              list.add(getNearestPlayerByLocation(senderLocation));
+            }
+          }
+          break;
+
+        case "@s":
+          if(sender instanceof Player) {
+            list.add((Player) sender);
+          }
+          break;
+
+        case "@r":
+          ArrayList<Player> curPlayerList = new ArrayList<Player>();
+          for (Player p : Bukkit.getOnlinePlayers()) {
+            curPlayerList.add(p);
+          }
+          Random random = new Random();
+          list.add(curPlayerList.get(random.nextInt(curPlayerList.size())));
+          break;
+      }
+    }
+    return list;
+  }
+
+  public static Player getNearestPlayerByLocation(Location l) {
+    double lastDistance = Double.MAX_VALUE;
+    Player latestPlayer = null;
+    for(Player p : l.getWorld().getPlayers()) {
+      double distance = p.getLocation().distance(l);
+      if(distance < lastDistance) {
+          lastDistance = distance;
+          latestPlayer = p;
+      }
+    }
+    return latestPlayer;
   }
 }
