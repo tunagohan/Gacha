@@ -31,7 +31,11 @@ Note: It is recommended that you use a protection plug-in such as LWC or WorldGu
 /gacha list - List all gacha
 /gacha modify <gacha_name> - Modify a gacha
 /gacha delete <gacha_name> - Delete a gacha
-/gacha ticket <player_name|@a|@p|@r|@s> - Issue a ticket
+/gacha ticket @a - Tickets will be issued to all players.
+/gacha ticket @p - We will issue a ticket to the nearest player.
+/gacha ticket @r - One person will be randomly selected from the players and a ticket will be issued.
+/gacha ticket @s - Issue a ticket to the player who executed the command
+/gacha ticket <player_name> - Issue a ticket
 ```
 
 # Permission
