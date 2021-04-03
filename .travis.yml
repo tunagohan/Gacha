@@ -6,10 +6,10 @@ deploy:
   api_key:
     secure: 
   file_glob: true
-  file: "$TRAVIS_BUILD_DIR/target/Gacha*.jar"
+  file: "$TRAVIS_BUILD_DIR/target/GachaPlus*.jar"
   skip_cleanup: true
   on:
-    repo: kubotan/Gacha
+    repo: tunagohan/GachaPlus
     tags: true
 notifications:
   email:

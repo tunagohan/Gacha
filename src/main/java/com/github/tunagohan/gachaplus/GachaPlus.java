@@ -1,4 +1,4 @@
-package space.gorogoro.gacha;
+package com.github.tunagohan.gachaplus;
 
 import java.io.File;
 import java.io.InputStream;
@@ -18,35 +18,34 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*
- * Gacha
+ * GachaPlus
  * @license    LGPLv3
- * @copyright  Copyright gorogoro.space 2018
- * @author     kubotan
- * @see        <a href="http://blog.gorogoro.space">Kubotan's blog.</a>
+ * @copyright  Copyright github.tunagohan 2021
+ * @author     tunagohan
  */
-public class Gacha extends JavaPlugin{
-  private GachaDatabase database;
-  private GachaCommand command;
-  private GachaListener listener;
+public class GachaPlus extends JavaPlugin{
+  private GachaPlusDatabase database;
+  private GachaPlusCommand command;
+  private GachaPlusListener listener;
 
   /**
-   * Get GachaDatabase instance.
+   * Get GachaPlusDatabase instance.
    */
-  public GachaDatabase getDatabase() {
+  public GachaPlusDatabase getDatabase() {
     return database;
   }
 
   /**
-   * Get GachaCommand instance.
+   * Get GachaPlusCommand instance.
    */
-  public GachaCommand getCommand() {
+  public GachaPlusCommand getCommand() {
     return command;
   }
 
   /**
-   * Get GachaListener instance.
+   * Get GachaPlusListener instance.
    */
-  public GachaListener getListener() {
+  public GachaPlusListener getListener() {
     return listener;
   }
 
@@ -82,20 +81,20 @@ public class Gacha extends JavaPlugin{
       }
 
       // Initialize the database.
-      database = new GachaDatabase(this);
+      database = new GachaPlusDatabase(this);
       database.initialize();
 
       // Register event listener.
       PluginManager pm = getServer().getPluginManager();
       HandlerList.unregisterAll(this);    // clean up
-      listener = new GachaListener(this);
+      listener = new GachaPlusListener(this);
       pm.registerEvents(listener, this);
 
-      // Instance prepared of GachaCommand.
-      command = new GachaCommand(this);
+      // Instance prepared of GachaPlusCommand.
+      command = new GachaPlusCommand(this);
 
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -138,7 +137,7 @@ public class Gacha extends JavaPlugin{
 
         case "ticket":
           if((sender instanceof BlockCommandSender) || (sender instanceof ConsoleCommandSender) || sender.isOp()) {
-            for(Player p:GachaUtility.getTarget(this, args[1], sender)) {  // @a @p @s @r or playername
+            for(Player p: GachaPlusUtility.getTarget(this, args[1], sender)) {  // @a @p @s @r or playername
               command.ticket(p);
             }
             hideUseageFlag = true;
@@ -167,7 +166,7 @@ public class Gacha extends JavaPlugin{
           hideUseageFlag = false;
       }
     }catch(Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }finally{
       command.finalize();
     }
@@ -188,7 +187,7 @@ public class Gacha extends JavaPlugin{
 
       getLogger().log(Level.INFO, "The Plugin Has Been Disabled!");
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 }

@@ -1,4 +1,4 @@
-package space.gorogoro.gacha;
+package com.github.tunagohan.gachaplus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,26 +13,25 @@ import org.bukkit.inventory.meta.ItemMeta;
 /*
  * FrameGuardCommand
  * @license    LGPLv3
- * @copyright  Copyright gorogoro.space 2018
- * @author     kubotan
- * @see        <a href="http://blog.gorogoro.space">Kubotan's blog.</a>
+ * @copyright  Copyright github.tunagohan 2021
+ * @author     tunagohan
  */
-public class GachaCommand {
-  private Gacha gacha;
+public class GachaPlusCommand {
+  private GachaPlus gachaPlus;
   private CommandSender sender;
   private String[] args;
-  protected static final String META_CHEST = "gacha.chest";
+  protected static final String META_CHEST = "gachaPlus.chest";
   protected static final String FORMAT_TICKET_CODE = "GACHA CODE:%s";
 
   /**
-   * Constructor of GachaCommand.
-   * @param Gacha gacha
+   * Constructor of GachaPlusCommand.
+   * @param GachaPlus gachaPlus
    */
-  public GachaCommand(Gacha gacha) {
+  public GachaPlusCommand(GachaPlus gachaPlus) {
     try{
-      this.gacha = gacha;
+      this.gachaPlus = gachaPlus;
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -46,7 +45,7 @@ public class GachaCommand {
       this.sender = sender;
       this.args = args;
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -58,7 +57,7 @@ public class GachaCommand {
       this.sender = null;
       this.args = null;
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -67,14 +66,14 @@ public class GachaCommand {
    * @return boolean true:Success false:Failure
    */
   public boolean list() {
-    List<String> glist = gacha.getDatabase().list();
+    List<String> glist = gachaPlus.getDatabase().list();
     if(glist.size() <= 0) {
-      GachaUtility.sendMessage(sender, "Record not found.");
+      GachaPlusUtility.sendMessage(sender, "Record not found.");
       return true;
     }
     
     for(String msg: glist) {
-      GachaUtility.sendMessage(sender, msg);
+      GachaPlusUtility.sendMessage(sender, msg);
     }
     return true;
   }
@@ -93,12 +92,12 @@ public class GachaCommand {
     }
     
     String gachaName = args[1];
-    if(gacha.getDatabase().getGacha(gachaName) == null) {
-      GachaUtility.sendMessage(sender, "Record not found. gacha_name=" + gachaName);
+    if(gachaPlus.getDatabase().getGacha(gachaName) == null) {
+      GachaPlusUtility.sendMessage(sender, "Record not found. gacha_name=" + gachaName);
       return true;
     }
-    GachaUtility.setPunch((Player)sender, gacha, gachaName);
-    GachaUtility.sendMessage(sender, "Please punching(right click) a chest of gachagacha. gacha_name=" + gachaName);
+    GachaPlusUtility.setPunch((Player)sender, gachaPlus, gachaName);
+    GachaPlusUtility.sendMessage(sender, "Please punching(right click) a chest of gachagacha. gacha_name=" + gachaName);
     return true;
   }
   
@@ -112,8 +111,8 @@ public class GachaCommand {
     }
     
     String gachaName = args[1];
-    if(gacha.getDatabase().deleteGacha(gachaName)) {
-      GachaUtility.sendMessage(sender, "Deleted. gacha_name=" + gachaName);
+    if(gachaPlus.getDatabase().deleteGacha(gachaName)) {
+      GachaPlusUtility.sendMessage(sender, "Deleted. gacha_name=" + gachaName);
       return true;
     }
     return false;
@@ -134,24 +133,24 @@ public class GachaCommand {
       return false;
     }
 
-    String ticketCode = gacha.getDatabase().getTicket();
+    String ticketCode = gachaPlus.getDatabase().getTicket();
     if(ticketCode == null) {
-      GachaUtility.sendMessage(sender, "Failure generate ticket code.");
+      GachaPlusUtility.sendMessage(sender, "Failure generate ticket code.");
       return false;
     }
 
     ItemStack ticket = new ItemStack(Material.PAPER, 1);
     ItemMeta im = ticket.getItemMeta();
-    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("ticket-display-name")));
+    im.setDisplayName(ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("ticket-display-name")));
     ArrayList<String> lore = new ArrayList<String>();
-    lore.add(ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("ticket-lore1")));
-    lore.add(ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("ticket-lore2")));
+    lore.add(ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("ticket-lore1")));
+    lore.add(ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("ticket-lore2")));
     lore.add(String.format(FORMAT_TICKET_CODE, ticketCode));
     im.setLore(lore);
     ticket.setItemMeta(im);
     p.getInventory().setItem(emptySlot, ticket);
     
-    GachaUtility.sendMessage(sender, "Issue a ticket. player_name=" + p.getDisplayName());
+    GachaPlusUtility.sendMessage(sender, "Issue a ticket. player_name=" + p.getDisplayName());
     return true;
   }
 
@@ -160,8 +159,8 @@ public class GachaCommand {
    * @return boolean true:Success false:Failure
    */
   public boolean reload() {
-    gacha.reloadConfig();
-    GachaUtility.sendMessage(sender, "reloaded.");
+    gachaPlus.reloadConfig();
+    GachaPlusUtility.sendMessage(sender, "reloaded.");
     return true;
   }
 
@@ -170,8 +169,8 @@ public class GachaCommand {
    * @return boolean true:Success false:Failure
    */
   public boolean enable() {
-    gacha.onEnable();
-    GachaUtility.sendMessage(sender, "enabled.");
+    gachaPlus.onEnable();
+    GachaPlusUtility.sendMessage(sender, "enabled.");
     return true;
   }
 
@@ -180,8 +179,8 @@ public class GachaCommand {
    * @return boolean true:Success false:Failure
    */
   public boolean disable() {
-    gacha.onDisable();
-    GachaUtility.sendMessage(sender, "disabled.");
+    gachaPlus.onDisable();
+    GachaPlusUtility.sendMessage(sender, "disabled.");
     return true;
   }
 }

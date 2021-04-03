@@ -1,4 +1,4 @@
-package space.gorogoro.gacha;
+package com.github.tunagohan.gachaplus;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -19,13 +19,12 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 /*
- * GachaUtility
+ * GachaPlusUtility
  * @license    LGPLv3
- * @copyright  Copyright gorogoro.space 2018
- * @author     kubotan
- * @see        <a href="http://blog.gorogoro.space">Kubotan's blog.</a>
+ * @copyright  Copyright github.tunagohan 2021
+ * @author     tunagohan
  */
-public class GachaUtility {
+public class GachaPlusUtility {
 
   protected static final String NUMALPHA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -47,7 +46,7 @@ public class GachaUtility {
    * @return boolean true:That's right false:That's not it
    */
   public static boolean isInPunch(Player player){
-    if( player.hasMetadata(GachaCommand.META_CHEST)){
+    if( player.hasMetadata(GachaPlusCommand.META_CHEST)){
       return true;
     }
     return false;
@@ -59,7 +58,7 @@ public class GachaUtility {
    * @return String gacha name
    */
   public static String getGachaNameInPunch(Player player){
-    for(MetadataValue mv:player.getMetadata(GachaCommand.META_CHEST)) {
+    for(MetadataValue mv:player.getMetadata(GachaPlusCommand.META_CHEST)) {
       return mv.asString();
     }
     return null;
@@ -68,21 +67,21 @@ public class GachaUtility {
   /**
    * Set punch processing.
    * @param Player Player
-   * @param Gacha Gacha
-   * @param String Gacha Name
+   * @param GachaPlus GachaPlus
+   * @param String GachaPlus Name
    */
-  public static void setPunch(Player player, Gacha gacha, String gachaName){
-    removePunch(player, gacha);
-    player.setMetadata(GachaCommand.META_CHEST, new FixedMetadataValue(gacha, gachaName));
+  public static void setPunch(Player player, GachaPlus gachaPlus, String gachaName){
+    removePunch(player, gachaPlus);
+    player.setMetadata(GachaPlusCommand.META_CHEST, new FixedMetadataValue(gachaPlus, gachaName));
   }
 
   /**
    * Remove punch processing.
    * @param Player Player
-   * @param Gacha Gacha
+   * @param GachaPlus GachaPlus
    */
-  public static void removePunch(Player player, Gacha gacha){
-    player.removeMetadata(GachaCommand.META_CHEST, gacha);
+  public static void removePunch(Player player, GachaPlus gachaPlus){
+    player.removeMetadata(GachaPlusCommand.META_CHEST, gachaPlus);
   }
   
   /**
@@ -91,7 +90,7 @@ public class GachaUtility {
    * @param String message
    */
   public static void sendMessage(CommandSender sender, String message){
-    sender.sendMessage((Object)ChatColor.DARK_RED + "[Gacha]" + " " + (Object)ChatColor.RED + message);
+    sender.sendMessage((Object)ChatColor.DARK_RED + "[GachaPlus]" + " " + (Object)ChatColor.RED + message);
   }
   
   /**
