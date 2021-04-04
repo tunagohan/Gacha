@@ -71,7 +71,6 @@ public class GachaPlus extends JavaPlugin{
       ArrayList<String> langFileNameList = new ArrayList<String>(
         Arrays.asList(
           "config_jp.yml"
-          // ,"config_fr.yml"   // add here language
         )
       );
       for (String curFileName : langFileNameList) {
@@ -104,14 +103,14 @@ public class GachaPlus extends JavaPlugin{
    * @return boolean true:Success false:Display the usage dialog set in plugin.yml
    */
   public boolean onCommand( CommandSender sender, Command commandInfo, String label, String[] args) {
-    boolean hideUseageFlag = true;  // true:Success false:Display the usage dialog set in plugin.yml
+    boolean hideUsageFlag = true;  // true:Success false:Display the usage dialog set in plugin.yml
     try{
       if(!commandInfo.getName().equals("gacha")) {
-        return hideUseageFlag;
+        return hideUsageFlag;
       }
 
       if(args.length <= 0) {
-        return hideUseageFlag;
+        return hideUsageFlag;
       }
       String subCommand = args[0];
 
@@ -119,19 +118,19 @@ public class GachaPlus extends JavaPlugin{
       switch(subCommand) {
         case "list":
           if(sender.hasPermission("gacha.list")) {
-            hideUseageFlag = command.list();
+            hideUsageFlag = command.list();
           }
           break;
 
         case "modify":
           if(sender.hasPermission("gacha.modify")) {
-            hideUseageFlag = command.modify();
+            hideUsageFlag = command.modify();
           }
           break;
 
         case "delete":
           if(sender.hasPermission("gacha.delete")) {
-            hideUseageFlag = command.delete();
+            hideUsageFlag = command.delete();
           }
           break;
 
@@ -140,37 +139,37 @@ public class GachaPlus extends JavaPlugin{
             for(Player p: GachaPlusUtility.getTarget(this, args[1], sender)) {  // @a @p @s @r or playername
               command.ticket(p);
             }
-            hideUseageFlag = true;
+            hideUsageFlag = true;
           }
           break;
 
         case "enable":
           if(sender.isOp()) {
-            hideUseageFlag = command.enable();
+            hideUsageFlag = command.enable();
           }
           break;
 
         case "reload":
           if(sender.isOp()) {
-            hideUseageFlag = command.reload();
+            hideUsageFlag = command.reload();
           }
           break;
 
         case "disable":
           if(sender.isOp()) {
-            hideUseageFlag = command.disable();
+            hideUsageFlag = command.disable();
           }
           break;
 
         default:
-          hideUseageFlag = false;
+          hideUsageFlag = false;
       }
     }catch(Exception e){
       GachaPlusUtility.logStackTrace(e);
     }finally{
       command.finalize();
     }
-    return hideUseageFlag;
+    return hideUsageFlag;
   }
 
   /**

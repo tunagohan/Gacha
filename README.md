@@ -47,11 +47,3 @@ gachaPlus.create - create gachaPlus by signbord
 
 Other operation is op.
 Issue ticket is console or op.
-
-# Disclaimer
-Do not assume any responsibility by use. Please use it at your own risk.
-
-# Build command(Linux)
-```
-mvn package
-```
