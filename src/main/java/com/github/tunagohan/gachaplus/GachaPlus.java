@@ -67,10 +67,9 @@ public class GachaPlus extends JavaPlugin{
         saveDefaultConfig();
       }
 
-      // copy languge template
       ArrayList<String> langFileNameList = new ArrayList<String>(
         Arrays.asList(
-          "config_jp.yml"
+          "config.yml"
         )
       );
       for (String curFileName : langFileNameList) {

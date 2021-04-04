@@ -26,8 +26,6 @@ import org.bukkit.plugin.Plugin;
  */
 public class GachaPlusUtility {
 
-  protected static final String NUMALPHA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
   /**
    * Output stack trace to log file.
    * @param Exception Exception
@@ -98,11 +96,7 @@ public class GachaPlusUtility {
    * @return String code
    */
   public static String generateCode(){
-    return String.format("%s-%s-%s",
-      RandomStringUtils.random(4, NUMALPHA),
-      RandomStringUtils.random(6, NUMALPHA),
-      RandomStringUtils.random(4, NUMALPHA)
-    );
+    return "Nanashi-Server-Gacha";
   }
 
   /**

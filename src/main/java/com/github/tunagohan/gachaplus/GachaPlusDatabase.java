@@ -511,27 +511,6 @@ public class GachaPlusDatabase {
     }
     return false;
   }
-  
-  /**
-   * Delete ticket
-   * @param String ticketCode
-   * @return boolean true:Success false:Failure
-   */
-  public boolean deleteTicket(String ticketCode) {
-    PreparedStatement prepStmt = null;
-    try {
-      prepStmt = getCon().prepareStatement("DELETE FROM ticket WHERE ticket_code = ?;");
-      prepStmt.setString(1, ticketCode);
-      prepStmt.addBatch();
-      prepStmt.executeBatch();
-      closePrepStmt(prepStmt);
-
-    } catch (SQLException e) {
-      GachaPlusUtility.logStackTrace(e);
-      return false;
-    }
-    return true;
-  }
 
   /**
    * Issue a ticket
@@ -558,9 +537,6 @@ public class GachaPlusDatabase {
       }
       countRetry++;      
       String curTicketCode = GachaPlusUtility.generateCode();
-      if(existsTicket(curTicketCode)){
-        return getTicket(countRetry);
-      }
 
       prepStmt = getCon().prepareStatement("INSERT INTO ticket(ticket_code) VALUES (?);");
       prepStmt.setString(1, curTicketCode);
@@ -577,33 +553,5 @@ public class GachaPlusDatabase {
       closePrepStmt(prepStmt);
     }
     return ticketCode;
-  }
-  
-  /**
-   * Exists ticket
-   * @param String ticketCode
-   * @return boolean true:found ticket code. false:not found ticket code.
-   */
-  public boolean existsTicket(String ticketCode) {
-    PreparedStatement prepStmt = null;
-    ResultSet rs = null;
-    try {
-      prepStmt = getCon().prepareStatement("SELECT id FROM ticket WHERE ticket_code = ?;");
-      prepStmt.setString(1, ticketCode);
-      rs = prepStmt.executeQuery();
-      while(rs.next()){
-        closeRs(rs);
-        closePrepStmt(prepStmt);
-        return true;
-      }
-      closeRs(rs);
-      closePrepStmt(prepStmt);
-    } catch (SQLException e) {
-      GachaPlusUtility.logStackTrace(e);
-    } finally {
-      closeRs(rs);
-      closePrepStmt(prepStmt);
-    }
-    return false;
   }
 }

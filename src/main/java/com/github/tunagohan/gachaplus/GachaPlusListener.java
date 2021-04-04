@@ -50,7 +50,7 @@ public class GachaPlusListener implements Listener{
   @EventHandler(priority=EventPriority.HIGHEST)
   public void onSignChange(SignChangeEvent event) {
     try {
-      if(!event.getLine(0).toLowerCase().equals("[gachaPlus]")) {
+      if(!event.getLine(0).toLowerCase().equals("[gachaP]")) {
         return;
       }
 
@@ -140,12 +140,6 @@ public class GachaPlusListener implements Listener{
         return;
       }
 
-      String ticketCode = GachaPlusUtility.scanf(GachaPlusCommand.FORMAT_TICKET_CODE, lores.get(2));
-      if(!gachaPlus.getDatabase().existsTicket(ticketCode)) {
-        GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("not-found-ticket-code")));
-        return;
-      }
-
       Chest chest = gachaPlus.getDatabase().getGachaChest(signLoc);
       if(chest == null) {
         GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("not-found-chest1")));
@@ -153,7 +147,6 @@ public class GachaPlusListener implements Listener{
         return;
       }
 
-      gachaPlus.getDatabase().deleteTicket(ticketCode);
       p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
 
       Inventory iv = chest.getInventory();

@@ -129,7 +129,6 @@ public class GachaPlusCommand {
 
     int emptySlot = p.getInventory().firstEmpty();
     if (emptySlot == -1) {
-      // not empty
       return false;
     }
 

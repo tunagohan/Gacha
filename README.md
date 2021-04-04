@@ -11,7 +11,7 @@ Note: It is recommended that you use a protection plug-in such as LWC or WorldGu
 # Useage
 
 1. Create signbord.  
- line1 `[gachaPlus]` Fixed character string  
+ line1 `[gachaP]` Fixed character string  
  line2 `gacha1` Specify gachaPlus name. Please enter the this line with one-byte alphanumeric underscore  
  line3 `***gacha1***` Title for sign.  
  line4 `test gachaPlus` Comment for sign.  

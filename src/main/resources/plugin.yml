@@ -1,7 +1,6 @@
 name: GachaPlus
-depend: [Jecon]
 version: 1.0
-api-version: 1.15
+api-version: 1.16
 description: |
   An existing Gacha plugin with a money element added.
   fork by https://github.com/gorogoro-space/Gacha
@@ -11,9 +10,8 @@ author: tunagohan
 main: com.github.tunagohan.gachaplus.GachaPlus
 
 commands:
-  gacha:
+  gachaplus:
     description: Commands to manage your gacha+
-    aliases: [gcp]
     usage: |
       Use /help gachaplus [subcommand] for more information
       /<command> list - List all gachaplus
@@ -22,17 +20,13 @@ commands:
       /<command> ticket <player_name> - Issue a ticket
   gachaplus list:
     description: List all gacha
-    aliases: [gcp l]
     usage: /<command> list
   gachaplus modify:
     description: Modify a gacha chest
-    aliases: [gcp m]
     usage: /<command> modify <gacha_name>
   gachaplus delete:
     description: Delete a gacha
-    aliases: [gcp d]
     usage: /<command> delete <gacha_name>
   gachaplus ticket:
     description: Issue a ticket
-    aliases: [gcp t]
     usage: /<command> ticket <player_name>
