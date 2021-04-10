@@ -1,4 +1,4 @@
-package space.gorogoro.gacha;
+package com.github.tunagohan.gachaplus;
 
 import java.io.File;
 import java.io.InputStream;
@@ -18,35 +18,34 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*
- * Gacha
+ * GachaPlus
  * @license    LGPLv3
- * @copyright  Copyright gorogoro.space 2018
- * @author     kubotan
- * @see        <a href="http://blog.gorogoro.space">Kubotan's blog.</a>
+ * @copyright  Copyright github.tunagohan 2021
+ * @author     tunagohan
  */
-public class Gacha extends JavaPlugin{
-  private GachaDatabase database;
-  private GachaCommand command;
-  private GachaListener listener;
+public class GachaPlus extends JavaPlugin{
+  private GachaPlusDatabase database;
+  private GachaPlusCommand command;
+  private GachaPlusListener listener;
 
   /**
-   * Get GachaDatabase instance.
+   * Get GachaPlusDatabase instance.
    */
-  public GachaDatabase getDatabase() {
+  public GachaPlusDatabase getDatabase() {
     return database;
   }
 
   /**
-   * Get GachaCommand instance.
+   * Get GachaPlusCommand instance.
    */
-  public GachaCommand getCommand() {
+  public GachaPlusCommand getCommand() {
     return command;
   }
 
   /**
-   * Get GachaListener instance.
+   * Get GachaPlusListener instance.
    */
-  public GachaListener getListener() {
+  public GachaPlusListener getListener() {
     return listener;
   }
 
@@ -68,11 +67,9 @@ public class Gacha extends JavaPlugin{
         saveDefaultConfig();
       }
 
-      // copy languge template
       ArrayList<String> langFileNameList = new ArrayList<String>(
         Arrays.asList(
-          "config_jp.yml"
-          // ,"config_fr.yml"   // add here language
+          "config.yml"
         )
       );
       for (String curFileName : langFileNameList) {
@@ -82,20 +79,20 @@ public class Gacha extends JavaPlugin{
       }
 
       // Initialize the database.
-      database = new GachaDatabase(this);
+      database = new GachaPlusDatabase(this);
       database.initialize();
 
       // Register event listener.
       PluginManager pm = getServer().getPluginManager();
       HandlerList.unregisterAll(this);    // clean up
-      listener = new GachaListener(this);
+      listener = new GachaPlusListener(this);
       pm.registerEvents(listener, this);
 
-      // Instance prepared of GachaCommand.
-      command = new GachaCommand(this);
+      // Instance prepared of GachaPlusCommand.
+      command = new GachaPlusCommand(this);
 
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -105,14 +102,14 @@ public class Gacha extends JavaPlugin{
    * @return boolean true:Success false:Display the usage dialog set in plugin.yml
    */
   public boolean onCommand( CommandSender sender, Command commandInfo, String label, String[] args) {
-    boolean hideUseageFlag = true;  // true:Success false:Display the usage dialog set in plugin.yml
+    boolean hideUsageFlag = true;  // true:Success false:Display the usage dialog set in plugin.yml
     try{
       if(!commandInfo.getName().equals("gacha")) {
-        return hideUseageFlag;
+        return hideUsageFlag;
       }
 
       if(args.length <= 0) {
-        return hideUseageFlag;
+        return hideUsageFlag;
       }
       String subCommand = args[0];
 
@@ -120,58 +117,58 @@ public class Gacha extends JavaPlugin{
       switch(subCommand) {
         case "list":
           if(sender.hasPermission("gacha.list")) {
-            hideUseageFlag = command.list();
+            hideUsageFlag = command.list();
           }
           break;
 
         case "modify":
           if(sender.hasPermission("gacha.modify")) {
-            hideUseageFlag = command.modify();
+            hideUsageFlag = command.modify();
           }
           break;
 
         case "delete":
           if(sender.hasPermission("gacha.delete")) {
-            hideUseageFlag = command.delete();
+            hideUsageFlag = command.delete();
           }
           break;
 
         case "ticket":
           if((sender instanceof BlockCommandSender) || (sender instanceof ConsoleCommandSender) || sender.isOp()) {
-            for(Player p:GachaUtility.getTarget(this, args[1], sender)) {  // @a @p @s @r or playername
+            for(Player p: GachaPlusUtility.getTarget(this, args[1], sender)) {  // @a @p @s @r or playername
               command.ticket(p);
             }
-            hideUseageFlag = true;
+            hideUsageFlag = true;
           }
           break;
 
         case "enable":
           if(sender.isOp()) {
-            hideUseageFlag = command.enable();
+            hideUsageFlag = command.enable();
           }
           break;
 
         case "reload":
           if(sender.isOp()) {
-            hideUseageFlag = command.reload();
+            hideUsageFlag = command.reload();
           }
           break;
 
         case "disable":
           if(sender.isOp()) {
-            hideUseageFlag = command.disable();
+            hideUsageFlag = command.disable();
           }
           break;
 
         default:
-          hideUseageFlag = false;
+          hideUsageFlag = false;
       }
     }catch(Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }finally{
       command.finalize();
     }
-    return hideUseageFlag;
+    return hideUsageFlag;
   }
 
   /**
@@ -188,7 +185,7 @@ public class Gacha extends JavaPlugin{
 
       getLogger().log(Level.INFO, "The Plugin Has Been Disabled!");
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 }

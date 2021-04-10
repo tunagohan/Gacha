@@ -1,129 +1,68 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>space.gorogoro</groupId>
-  <artifactId>Gacha</artifactId>
-  <version>1.2</version>
-  <packaging>jar</packaging>
-  <name>Gacha</name>
-
-  <build>
-    <plugins>
-      <!--java build setting-->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-        <version>3.1</version>
-      </plugin>
-      <!--//java build setting-->
-      <!--dev server autorun
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
-        <executions>
-          <execution>
-            <id>scp-dev</id>
-            <phase>package</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <scp trust="true" verbose="true" localFile="${project.basedir}/target/${project.artifactId}-${project.version}.${project.packaging}"
-                  remoteToFile="minecraft@192.168.1.1:/home/minecraft/plugins" port="22" keyfile="/Users/username/id_rsa" passphrase="password"></scp>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.53</version>
-          </dependency>
-          <dependency>
-            <groupId>ant</groupId>
-            <artifactId>ant-jsch</artifactId>
-            <version>1.6.5</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      //dev server autorun-->
-      <!-- findbugs -->
-      <!--
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <phase>test</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <effort>Max</effort>
-          <threshold>Low</threshold>
-          <failOnError>true</failOnError>
-          <xmlOutput>true</xmlOutput>
-          <outputEncoding>UTF-8</outputEncoding>
-          <xmlOutputDirectory>target/site/findbugs</xmlOutputDirectory>
-          <findbugsXmlOutputDirectory>target/site/findbugs</findbugsXmlOutputDirectory>
-        </configuration>
-      </plugin>
-      -->
-      <!-- checkstyle -->
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.13</version>
-        <executions>
-          <execution>
-            <phase>test</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <configLocation>checkstyle.xml</configLocation>
-          <violationSeverity>warning</violationSeverity>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-          <outputFile>${project.build.directory}/site/checkstyle/checkstyle-result.xml</outputFile>
-        </configuration>
-      </plugin>
-      -->
-    </plugins>
-  </build>
-
   <properties>
+    <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <groupId>com.github.tunagohan</groupId>
+  <artifactId>GachaPlus</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>GachaPlus</name>
+  <description>An existing Gacha plugin with a money element added. fork by https://github.com/gorogoro-space/Gacha
+    You can set money for each gacha. In addition, gacha tickets are issued separately for each gacha instead of
+    being shared.
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <targetPath>.</targetPath>
+      </resource>
+    </resources>
+  </build>
+
   <repositories>
     <repository>
-      <id>spigot-repo</id>
+      <id>spigotmc-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
+<!--    <repository>-->
+<!--      <id>himajyun-repo</id>-->
+<!--      <url>https://himajyun.github.io/mvn-repo/</url>-->
+<!--    </repository>-->
   </repositories>
 
   <dependencies>
-    <!--Spigot API-->
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.4-R0.1-SNAPSHOT</version>
+      <version>1.16.5-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>jp.jyn</groupId>-->
+<!--      <artifactId>Jecon</artifactId>-->
+<!--      <version>2.2.0</version>-->
+<!--      <scope>provided</scope>-->
+<!--      <optional>true</optional>-->
+<!--    </dependency>-->
   </dependencies>
 </project>

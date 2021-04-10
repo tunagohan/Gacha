@@ -1,4 +1,4 @@
-package space.gorogoro.gacha;
+package com.github.tunagohan.gachaplus;
 
 import java.io.File;
 import java.sql.Connection;
@@ -16,24 +16,23 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 
 /*
- * GachaDatabase
+ * GachaPlusDatabase
  * @license    LGPLv3
- * @copyright  Copyright gorogoro.space 2018
- * @author     kubotan
- * @see        <a href="http://blog.gorogoro.space">Kubotan's blog.</a>
+ * @copyright  Copyright github.tunagohan 2021
+ * @author     tunagohan
  */
-public class GachaDatabase {
-  private Gacha gacha;
+public class GachaPlusDatabase {
+  private GachaPlus gachaPlus;
   private Connection con;
   private List<String> listGachaSignCache = new ArrayList<String>();
   private long expireCache; 
   
   /**
-   * Constructor of GachaDatabase.
-   * @param Gacha gacha
+   * Constructor of GachaPlusDatabase.
+   * @param GachaPlus gachaPlus
    */
-  public GachaDatabase(Gacha gacha) {
-    this.gacha = gacha;
+  public GachaPlusDatabase(GachaPlus gachaPlus) {
+    this.gachaPlus = gachaPlus;
   }
 
   /**
@@ -43,18 +42,18 @@ public class GachaDatabase {
   private Connection getCon(){
     try{
       // Create database folder.
-      if(!gacha.getDataFolder().exists()){
-        gacha.getDataFolder().mkdir();
+      if(!gachaPlus.getDataFolder().exists()){
+        gachaPlus.getDataFolder().mkdir();
       }
       if(con == null) {
         // Select JDBC driver.
         Class.forName("org.sqlite.JDBC");
-        String url = "jdbc:sqlite:" + gacha.getDataFolder() + File.separator + "sqlite.db";
+        String url = "jdbc:sqlite:" + gachaPlus.getDataFolder() + File.separator + "sqlite.db";
         con = DriverManager.getConnection(url);
         con.setAutoCommit(true);
       }
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
       closeCon(con);
     }
     return con;
@@ -69,10 +68,10 @@ public class GachaDatabase {
     try{
       if(stmt == null) {
         stmt = getCon().createStatement();
-        stmt.setQueryTimeout(gacha.getConfig().getInt("query-timeout"));
+        stmt.setQueryTimeout(gachaPlus.getConfig().getInt("query-timeout"));
       }
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
     return stmt;
   }
@@ -87,7 +86,7 @@ public class GachaDatabase {
         con.close();
       }
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -101,7 +100,7 @@ public class GachaDatabase {
         rs.close();
       }
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -115,7 +114,7 @@ public class GachaDatabase {
         stmt.close();
       }
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -129,7 +128,7 @@ public class GachaDatabase {
         prepStmt.close();
       }
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -142,7 +141,7 @@ public class GachaDatabase {
       listGachaSignCache  = new ArrayList<String>();
       expireCache = System.currentTimeMillis();
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -155,7 +154,7 @@ public class GachaDatabase {
     try{
       stmt = getStmt();
       
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS gacha ("
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS gachaPlus ("
         + "  id INTEGER PRIMARY KEY AUTOINCREMENT"
         + "  ,gacha_name STRING NOT NULL"
         + "  ,gacha_display_name STRING NOT NULL"
@@ -171,9 +170,9 @@ public class GachaDatabase {
         + "  ,created_at DATETIME NOT NULL DEFAULT (datetime('now','localtime')) CHECK(created_at LIKE '____-__-__ __:__:__')"
         + ");"
       );
-      stmt.executeUpdate("CREATE UNIQUE INDEX IF NOT EXISTS gacha_name_uindex ON gacha (gacha_name);");
-      stmt.executeUpdate("CREATE UNIQUE INDEX IF NOT EXISTS world_name_sign_xyz_uindex ON gacha (world_name, sign_x, sign_y, sign_z);");
-      stmt.executeUpdate("CREATE UNIQUE INDEX IF NOT EXISTS world_name_chest_xyz_uindex ON gacha (world_name, chest_x, chest_y, chest_z);");
+      stmt.executeUpdate("CREATE UNIQUE INDEX IF NOT EXISTS gacha_name_uindex ON gachaPlus (gacha_name);");
+      stmt.executeUpdate("CREATE UNIQUE INDEX IF NOT EXISTS world_name_sign_xyz_uindex ON gachaPlus (world_name, sign_x, sign_y, sign_z);");
+      stmt.executeUpdate("CREATE UNIQUE INDEX IF NOT EXISTS world_name_chest_xyz_uindex ON gachaPlus (world_name, chest_x, chest_y, chest_z);");
 
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticket ("
         + "  id INTEGER PRIMARY KEY AUTOINCREMENT"
@@ -188,7 +187,7 @@ public class GachaDatabase {
       refreshCache();
 
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     } finally {
       closeRs(rs);
       closeStmt(stmt);
@@ -214,7 +213,7 @@ public class GachaDatabase {
         + "  ,chest_y "
         + "  ,chest_z "
         + "FROM"
-        + "  gacha "
+        + "  gachaPlus "
         + "ORDER BY"
         + "  id DESC"
         );
@@ -237,7 +236,7 @@ public class GachaDatabase {
       closeRs(rs);
       closePrepStmt(prepStmt);
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     } finally {
       closeRs(rs);
       closePrepStmt(prepStmt);
@@ -246,14 +245,14 @@ public class GachaDatabase {
   }
   
   /**
-   * Delete gacha
+   * Delete gachaPlus
    * @param String gachaName
    * @return boolean true:Success false:Failure
    */
   public boolean deleteGacha(String gachaName) {
     PreparedStatement prepStmt = null;
     try {
-      prepStmt = getCon().prepareStatement("DELETE FROM gacha WHERE gacha_name = ?;");
+      prepStmt = getCon().prepareStatement("DELETE FROM gachaPlus WHERE gacha_name = ?;");
       prepStmt.setString(1, gachaName);
       prepStmt.addBatch();
       prepStmt.executeBatch();
@@ -261,23 +260,23 @@ public class GachaDatabase {
       refreshCache();
 
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
       return false;
     }
     return true;
   }
 
   /**
-   * Get gacha id
+   * Get gachaPlus id
    * @param String gachaName
-   * @return Integer|null Gacha id.
+   * @return Integer|null GachaPlus id.
    */
   public Integer getGacha(String gachaName){
     PreparedStatement prepStmt = null;
     ResultSet rs = null;
     Integer gachaId = null;
     try {
-      prepStmt = getCon().prepareStatement("SELECT id FROM gacha WHERE gacha_name=?");
+      prepStmt = getCon().prepareStatement("SELECT id FROM gachaPlus WHERE gacha_name=?");
       prepStmt.setString(1, gachaName);
       rs = prepStmt.executeQuery();
       while(rs.next()){
@@ -286,21 +285,21 @@ public class GachaDatabase {
       closeRs(rs);
       closePrepStmt(prepStmt);
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
     return gachaId;
   }
 
   /**
-   * Get gacha chest
+   * Get gachaPlus chest
    * @param Location signLoc
-   * @return Chest|null Gacha chest.
+   * @return Chest|null GachaPlus chest.
    */
   public Chest getGachaChest(Location signLoc){
     PreparedStatement prepStmt = null;
     ResultSet rs = null;
     try {
-      prepStmt = getCon().prepareStatement("SELECT world_name, chest_x, chest_y, chest_z FROM gacha WHERE world_name=? AND sign_x=? AND sign_y=? AND sign_z=?");
+      prepStmt = getCon().prepareStatement("SELECT world_name, chest_x, chest_y, chest_z FROM gachaPlus WHERE world_name=? AND sign_x=? AND sign_y=? AND sign_z=?");
       prepStmt.setString(1, signLoc.getWorld().getName());
       prepStmt.setInt(2, signLoc.getBlockX());
       prepStmt.setInt(3, signLoc.getBlockY());
@@ -333,22 +332,22 @@ public class GachaDatabase {
         return null;
       }
       
-      Block b = new Location(gacha.getServer().getWorld(worldName), chestX, chestY, chestZ).getBlock();
+      Block b = new Location(gachaPlus.getServer().getWorld(worldName), chestX, chestY, chestZ).getBlock();
       if(!b.getType().equals(Material.CHEST)) {
         return null;
       }
       
       return (Chest)b.getState();
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
     return null;
   }
 
   /**
-   * Get gacha id
+   * Get gachaPlus id
    * @param Location loc
-   * @return Integer|null Gacha id.
+   * @return Integer|null GachaPlus id.
    */
   public boolean isGacha(Location loc){
     try {
@@ -358,16 +357,16 @@ public class GachaDatabase {
       }
       return isGacha(loc, cacheClear);
     } catch (Exception e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
     return false;
   }
   
   /**
-   * Get gacha id
+   * Get gachaPlus id
    * @param Location loc
    * @param boolean cacheClear
-   * @return Integer|null Gacha id.
+   * @return Integer|null GachaPlus id.
    */
   public boolean isGacha(Location loc, boolean cacheClear){
     try {
@@ -387,7 +386,7 @@ public class GachaDatabase {
       }
 
     } catch (Exception e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
     return false;
   }
@@ -398,7 +397,7 @@ public class GachaDatabase {
    */
   public boolean refreshCache(){
     try {
-      PreparedStatement prepStmt = getCon().prepareStatement("SELECT world_name, sign_x, sign_y, sign_z FROM gacha");
+      PreparedStatement prepStmt = getCon().prepareStatement("SELECT world_name, sign_x, sign_y, sign_z FROM gachaPlus");
       ResultSet rs = prepStmt.executeQuery();
       String cacheIndex;
       listGachaSignCache.clear();
@@ -412,18 +411,18 @@ public class GachaDatabase {
         );
         listGachaSignCache.add(cacheIndex);
       }
-      expireCache = System.currentTimeMillis() + (gacha.getConfig().getInt("cache-expire-seconds") * 1000);
+      expireCache = System.currentTimeMillis() + (gachaPlus.getConfig().getInt("cache-expire-seconds") * 1000);
       closeRs(rs);
       closePrepStmt(prepStmt);
       return true;
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
     return false;
   }
 
   /**
-   * Get gacha
+   * Get gachaPlus
    * @param String gachaName
    * @param String gachaDisplayNam
    * @param String gachaDetail
@@ -431,7 +430,7 @@ public class GachaDatabase {
    * @param Integer sign_x
    * @param Integer sign_y
    * @param Integer sign_z
-   * @return Integer Gacha id.
+   * @return Integer GachaPlus id.
    */
   public Integer getGacha(String gachaName, String gachaDisplayName, String gachaDetail, String worldName, Integer signX, Integer signY, Integer signZ){
     PreparedStatement prepStmt = null;
@@ -443,7 +442,7 @@ public class GachaDatabase {
         return gachaId;
       }
       
-      prepStmt = getCon().prepareStatement("INSERT INTO gacha("
+      prepStmt = getCon().prepareStatement("INSERT INTO gachaPlus("
         + "  gacha_name"
         + ", gacha_display_name"
         + ", gacha_detail"
@@ -470,7 +469,7 @@ public class GachaDatabase {
       refreshCache();
 
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     } finally {
       closeRs(rs);
       closePrepStmt(prepStmt);
@@ -479,12 +478,12 @@ public class GachaDatabase {
   }
 
   /**
-   * Update gacha chest
+   * Update gachaPlus chest
    * @param gachaName
    * @param Integer chestX
    * @param Integer chestY
    * @param Integer chestZ
-   * @return Integer Gacha id.
+   * @return Integer GachaPlus id.
    */
   public boolean updateGachaChest(String gachaName, Integer chestX, Integer chestY, Integer chestZ){
     PreparedStatement prepStmt = null;
@@ -495,7 +494,7 @@ public class GachaDatabase {
         return false;
       }
       
-      prepStmt = getCon().prepareStatement("UPDATE gacha SET chest_x = ?, chest_y = ?, chest_z = ? WHERE gacha_name = ?;");
+      prepStmt = getCon().prepareStatement("UPDATE gachaPlus SET chest_x = ?, chest_y = ?, chest_z = ? WHERE gacha_name = ?;");
       prepStmt.setInt(1, chestX);
       prepStmt.setInt(2, chestY);
       prepStmt.setInt(3, chestZ);
@@ -505,33 +504,12 @@ public class GachaDatabase {
       closePrepStmt(prepStmt);
       return true;
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     } finally {
       closeRs(rs);
       closePrepStmt(prepStmt);
     }
     return false;
-  }
-  
-  /**
-   * Delete ticket
-   * @param String ticketCode
-   * @return boolean true:Success false:Failure
-   */
-  public boolean deleteTicket(String ticketCode) {
-    PreparedStatement prepStmt = null;
-    try {
-      prepStmt = getCon().prepareStatement("DELETE FROM ticket WHERE ticket_code = ?;");
-      prepStmt.setString(1, ticketCode);
-      prepStmt.addBatch();
-      prepStmt.executeBatch();
-      closePrepStmt(prepStmt);
-
-    } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
-      return false;
-    }
-    return true;
   }
 
   /**
@@ -558,10 +536,7 @@ public class GachaDatabase {
         return null;
       }
       countRetry++;      
-      String curTicketCode = GachaUtility.generateCode();
-      if(existsTicket(curTicketCode)){
-        return getTicket(countRetry);
-      }
+      String curTicketCode = GachaPlusUtility.generateCode();
 
       prepStmt = getCon().prepareStatement("INSERT INTO ticket(ticket_code) VALUES (?);");
       prepStmt.setString(1, curTicketCode);
@@ -572,39 +547,11 @@ public class GachaDatabase {
       ticketCode = curTicketCode;
       
     } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     } finally {
       closeRs(rs);
       closePrepStmt(prepStmt);
     }
     return ticketCode;
-  }
-  
-  /**
-   * Exists ticket
-   * @param String ticketCode
-   * @return boolean true:found ticket code. false:not found ticket code.
-   */
-  public boolean existsTicket(String ticketCode) {
-    PreparedStatement prepStmt = null;
-    ResultSet rs = null;
-    try {
-      prepStmt = getCon().prepareStatement("SELECT id FROM ticket WHERE ticket_code = ?;");
-      prepStmt.setString(1, ticketCode);
-      rs = prepStmt.executeQuery();
-      while(rs.next()){
-        closeRs(rs);
-        closePrepStmt(prepStmt);
-        return true;
-      }
-      closeRs(rs);
-      closePrepStmt(prepStmt);
-    } catch (SQLException e) {
-      GachaUtility.logStackTrace(e);
-    } finally {
-      closeRs(rs);
-      closePrepStmt(prepStmt);
-    }
-    return false;
   }
 }

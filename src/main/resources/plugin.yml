@@ -1,33 +1,32 @@
-name: Gacha
-version: 1.2
-api-version: 1.15
-description: gacha.
-author: kubotan
-main: space.gorogoro.gacha.Gacha
+name: GachaPlus
+version: 1.0
+api-version: 1.16
+description: |
+  An existing Gacha plugin with a money element added.
+  fork by https://github.com/gorogoro-space/Gacha
+  You can set money for each gacha.
+  In addition, gacha tickets are issued separately for each gacha instead of being shared.
+author: tunagohan
+main: com.github.tunagohan.gachaplus.GachaPlus
 
 commands:
-  gacha:
-    description: Commands to manage your gacha
-    aliases: [gatya]
+  gachaplus:
+    description: Commands to manage your gacha+
     usage: |
-      Use /help gacha [subcommand] for more information
-      /<command> list - List all gacha
-      /<command> modify <gacha_name> - Modify a gacha
-      /<command> delete <gacha_name> - Delete a gacha
+      Use /help gachaplus [subcommand] for more information
+      /<command> list - List all gachaplus
+      /<command> modify <gacha_name> - Modify a gachaplus
+      /<command> delete <gacha_name> - Delete a gachaplus
       /<command> ticket <player_name> - Issue a ticket
-  gacha list:
+  gachaplus list:
     description: List all gacha
-    aliases: [gacha l]
     usage: /<command> list
-  gacha modify:
+  gachaplus modify:
     description: Modify a gacha chest
-    aliases: [gacha m]
     usage: /<command> modify <gacha_name>
-  gacha delete:
+  gachaplus delete:
     description: Delete a gacha
-    aliases: [gacha d]
     usage: /<command> delete <gacha_name>
-  gacha ticket:
+  gachaplus ticket:
     description: Issue a ticket
-    aliases: [gacha t]
     usage: /<command> ticket <player_name>

@@ -1,4 +1,4 @@
-package space.gorogoro.gacha;
+package com.github.tunagohan.gachaplus;
 
 import java.util.List;
 import java.util.Random;
@@ -24,23 +24,22 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /*
- * GachaListener
+ * GachaPlusListener
  * @license    LGPLv3
- * @copyright  Copyright gorogoro.space 2018
- * @author     kubotan
- * @see        <a href="http://blog.gorogoro.space">Kubotan's blog.</a>
+ * @copyright  Copyright github.tunagohan 2021
+ * @author     tunagohan
  */
-public class GachaListener implements Listener{
-  private Gacha gacha;
+public class GachaPlusListener implements Listener{
+  private GachaPlus gachaPlus;
 
   /**
-   * Constructor of GachaListener.
+   * Constructor of GachaPlusListener.
    */
-  public GachaListener(Gacha gacha) {
+  public GachaPlusListener(GachaPlus gachaPlus) {
     try{
-      this.gacha = gacha;
+      this.gachaPlus = gachaPlus;
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -51,18 +50,18 @@ public class GachaListener implements Listener{
   @EventHandler(priority=EventPriority.HIGHEST)
   public void onSignChange(SignChangeEvent event) {
     try {
-      if(!event.getLine(0).toLowerCase().equals("[gacha]")) {
+      if(!event.getLine(0).toLowerCase().equals("[gachaP]")) {
         return;
       }
 
-      if(!event.getPlayer().hasPermission("gacha.create")) {
+      if(!event.getPlayer().hasPermission("gachaPlus.create")) {
         return;
       }
 
       Location signLoc = event.getBlock().getLocation();
-      if(gacha.getDatabase().isGacha(signLoc)) {
+      if(gachaPlus.getDatabase().isGacha(signLoc)) {
         event.setCancelled(true);
-        GachaUtility.sendMessage(event.getPlayer(), "It is already registered. To continue, please delete first.");
+        GachaPlusUtility.sendMessage(event.getPlayer(), "It is already registered. To continue, please delete first.");
         return;
       }
 
@@ -76,23 +75,23 @@ public class GachaListener implements Listener{
       Pattern p = Pattern.compile("^[0-9a-zA-Z_]+$");
       if(!p.matcher(gachaName).find()) {
         event.setCancelled(true);
-        GachaUtility.sendMessage(event.getPlayer(), "Please enter the second line of the signboard with one-byte alphanumeric underscore.");
+        GachaPlusUtility.sendMessage(event.getPlayer(), "Please enter the second line of the signboard with one-byte alphanumeric underscore.");
         return;
       }
 
-      Integer gachaId = gacha.getDatabase().getGacha(gachaName, gachaDisplayName, gachaDetail, worldName, x, y, z);
+      Integer gachaId = gachaPlus.getDatabase().getGacha(gachaName, gachaDisplayName, gachaDetail, worldName, x, y, z);
       if(gachaId == null) {
         event.setCancelled(true);
-        throw new Exception("Can not get gacha. gachaName=" + gachaName);
+        throw new Exception("Can not get gachaPlus. gachaName=" + gachaName);
       }
 
-      event.setLine(0, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("sign-line1-prefix") + gachaDisplayName));
-      event.setLine(1, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("sign-line2-prefix") + gachaDetail));
-      event.setLine(2, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("sign-line3")));
-      event.setLine(3, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("sign-line4")));
+      event.setLine(0, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("sign-line1-prefix") + gachaDisplayName));
+      event.setLine(1, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("sign-line2-prefix") + gachaDetail));
+      event.setLine(2, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("sign-line3")));
+      event.setLine(3, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("sign-line4")));
 
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -124,53 +123,46 @@ public class GachaListener implements Listener{
       Player p = event.getPlayer();
 
       Location signLoc = sign.getLocation();
-      if(!gacha.getDatabase().isGacha(signLoc)) {
+      if(!gachaPlus.getDatabase().isGacha(signLoc)) {
         return;
       }
       event.setCancelled(true);
 
       ItemStack ticket = p.getInventory().getItemInMainHand();
       if( !ticket.getType().equals(Material.PAPER) ) {
-        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("hold-the-ticket")));
+        GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("hold-the-ticket")));
         return;
       }
 
       List<String> lores = ticket.getItemMeta().getLore();
       if( lores.size() != 3) {
-        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("hold-the-ticket")));
+        GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("hold-the-ticket")));
         return;
       }
 
-      String ticketCode = GachaUtility.scanf(GachaCommand.FORMAT_TICKET_CODE, lores.get(2));
-      if(!gacha.getDatabase().existsTicket(ticketCode)) {
-        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-ticket-code")));
-        return;
-      }
-
-      Chest chest = gacha.getDatabase().getGachaChest(signLoc);
+      Chest chest = gachaPlus.getDatabase().getGachaChest(signLoc);
       if(chest == null) {
-        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-chest1")));
-        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-chest2")));
+        GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("not-found-chest1")));
+        GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("not-found-chest2")));
         return;
       }
 
-      gacha.getDatabase().deleteTicket(ticketCode);
       p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
 
       Inventory iv = chest.getInventory();
       int pick = new Random().nextInt(iv.getSize());
       ItemStack pickItem = iv.getItem(pick);
       if(pickItem == null) {
-        GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("not-found-pick")));
+        GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("not-found-pick")));
         return;
       }
 
       ItemStack sendItem = pickItem.clone();
       p.getInventory().addItem(sendItem);
-      GachaUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gacha.getConfig().getString("found-pick")));
+      GachaPlusUtility.sendMessage(p, ChatColor.translateAlternateColorCodes('&', gachaPlus.getConfig().getString("found-pick")));
 
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 
@@ -189,26 +181,26 @@ public class GachaListener implements Listener{
         return;
       }
 
-      if(!GachaUtility.isInPunch(p)) {
+      if(!GachaPlusUtility.isInPunch(p)) {
         return;
       } else {
         event.setCancelled(true);
       }
 
-      String gachaName = GachaUtility.getGachaNameInPunch(p);
-      GachaUtility.removePunch(p, gacha);
+      String gachaName = GachaPlusUtility.getGachaNameInPunch(p);
+      GachaPlusUtility.removePunch(p, gachaPlus);
       if(gachaName == null) {
         return;
       }
 
       Location loc = event.getClickedBlock().getLocation();
-      if(gacha.getDatabase().updateGachaChest(gachaName, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
-        GachaUtility.sendMessage(p, "Updated. gacha_name=" + gachaName);
+      if(gachaPlus.getDatabase().updateGachaChest(gachaName, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+        GachaPlusUtility.sendMessage(p, "Updated. gacha_name=" + gachaName);
         return;
       }
 
     } catch (Exception e){
-      GachaUtility.logStackTrace(e);
+      GachaPlusUtility.logStackTrace(e);
     }
   }
 }
